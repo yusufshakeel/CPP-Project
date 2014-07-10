@@ -5,8 +5,6 @@ C++ Programming
 
 By: Yusuf Shakeel
 
-Date: 10-July-2014 Thursday
-
 [https://www.facebook.com/yusufshakeel](https://www.facebook.com/yusufshakeel)
 
 [http://www.youtube.com/yusufshakeel](http://www.youtube.com/yusufshakeel)
