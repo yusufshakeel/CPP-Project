@@ -55,9 +55,9 @@ private:
 	long dystrlen;
 	
 	//private member functions
-	void __dymalloc();					//free and allocate memory space for string.
+	void __dymalloc(void);				//free and allocate memory space for string.
 	long __dystrlen(const char *);		//find length of the string.
-	void __dyrealloc();					//reallocated memory space and retain previous string.
+	void __dyrealloc(void);				//reallocated memory space and retain previous string.
 	
 public:
 	
@@ -66,15 +66,25 @@ public:
 	dystring(const char *s);
 
 	//public member functions
-	void concat(const char *source);	//concatenate source to string
+	void concat(const char *source);	//concatenate source to string.
 	void copy(const char *source);	//copy source to string. overwrite string content.
-	char * get();			//get the content.
-	bool isPalindrome();	//true (1) if string is Palindrome. false (0) otherwise.
-	long length();			//length of the string.
-	void reverse();			//reverse string.
-	void toggleCase();		//toggle case. convert A to a and vice-versa.
-	void toUpper();			//to upper case. convert a to A.
-	void toLower();			//to lower case. convert A to a.
+	char charAt(long index);	//return character at the given index, NULL (\0) for invalid index.
+	char * get(void);			//get the content.
+	bool isPalindrome(void);	//true (1) if string is Palindrome. false (0) otherwise.
+	long indexOf(const char ch);		//return index of first occurance of the character ch in string, -1 otherwise.
+	long indexOf(const char *str);		//return index of first occurance of the substring str in string, -1 otherwise.
+	void insertAt(const char ch, long index);	//insert character ch at position index in string when index is valid, ignore otherwise.
+	long lastIndexOf(const char ch);	//return index of last occurance of the character ch in string, -1 otherwise.
+	long lastIndexOf(const char *str);	//return index of last occurance of the substring str in string, -1 otherwise.
+	long length(void);			//length of the string.
+	void replace(const char ch, const char nch);	//replace all occurance of the character ch with nch in the string.
+	void reverse(void);			//reverse string.
+	void toggleCase(void);		//toggle case. convert A to a and vice-versa.
+	void toUpper(void);			//to upper case. convert a to A.
+	void toLower(void);			//to lower case. convert A to a.
+	void trim(void);			//remove space from front and end of the string.
+	char * substring(long start);	//return a substring from index start till end of the string, for invalid start index return NULL (\0)
+	char * substring(long start, long end);	//return a substring from index start to end both inclusive, for invalid index return NULL (\0)
 };
 
-#endif /* Not __DYSTRING_H_INCLUDED */
+#endif /* __DYSTRING_H_INCLUDED ends here*/
