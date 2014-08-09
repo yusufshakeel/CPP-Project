@@ -45,7 +45,7 @@
 
 #include "dystring.h"
 
-//----- DYSTRING CLASS FUNCTIONS ----------------------//
+//////////////////// DYSTRING CLASS FUNCTIONS ////////////////////////
 
 //----- PRIVATE FUNCTIONS -----------------------------//
 /* memory allocation */
@@ -53,14 +53,6 @@ void dystring::__dymalloc(void){
 	if(dystr != 0)
 		delete dystr;
 	dystr = new char[dystrlen + 1];
-}
-
-/* return length of the string s */
-long dystring::__dystrlen(const char *s){
-	long l = 0;
-	while(*(s + l) != '\0')
-		l++;
-	return l;
 }
 
 /* reallocate memory space and retain previous string */
@@ -90,6 +82,72 @@ dystring::dystring(const char *s){
 	copy(s);
 }
 
+//----- FRIEND FUNCTION -------------------------------//
+/* return length of the string s */
+long __dystrlen(const char *s){
+	long l = 0;
+	while(*(s + l) != '\0')
+		l++;
+	return l;
+}
+
+
+//----- OPERATOR OVERLOADING --------------------------//
+/* concatenate dystring with string constant and return the result. Example: str + "hello" */
+dystring dystring::operator +(const char *str){
+	dystring tmp;	//create temporary variable
+	long slen = __dystrlen(str);
+	tmp.dystrlen = dystrlen + slen;	//length of the final string
+	tmp.dystr = new char[tmp.dystrlen + 1];	//memory allocated
+	long i;
+	for(i = 0; i < dystrlen; i++){		//copy first string content in tmp
+		*(tmp.dystr + i) = *(dystr + i);
+	}
+	long j;
+	for(j = 0; j < slen; j++){	//copy second string content in tmp
+		*(tmp.dystr + i + j) = *(str + j);
+	}
+	*(tmp.dystr + i + j + 1) = '\0';
+	return tmp;
+}
+
+/*  concatenate two dystring using + operator. Example: str1 + str2 */
+dystring dystring::operator +(dystring str){
+	dystring tmp;	//create temporary variable
+	tmp.dystrlen = dystrlen + str.dystrlen;	//length of the final string
+	tmp.dystr = new char[tmp.dystrlen + 1];	//memory allocated
+	long i;
+	for(i = 0; i < dystrlen; i++){		//copy first string content in tmp
+		*(tmp.dystr + i) = *(dystr + i);
+	}
+	long j;
+	for(j = 0; j < str.dystrlen; j++){	//copy second string content in tmp
+		*(tmp.dystr + i + j) = *(str.dystr + j);
+	}
+	*(tmp.dystr + i + j + 1) = '\0';
+	return tmp;
+}
+
+/* concatenate string constant with string. Example: "hello" + str */
+dystring operator +(const char *str, dystring str2){
+	dystring tmp;	//create temporary variable
+	long slen = __dystrlen(str);
+	tmp.dystrlen = slen + str2.dystrlen;	//length of the final string
+	tmp.dystr = new char[tmp.dystrlen + 1];	//memory allocated
+	long j;
+	for(j = 0; j < slen; j++){	//copy string constant in tmp
+		*(tmp.dystr + j) = *(str + j);
+	}
+	long i;
+	for(i = 0; i < tmp.dystrlen; i++){		//copy str2 content in tmp
+		*(tmp.dystr + j + i) = *(str2.dystr + i);
+	}
+	*(tmp.dystr + j + i + 1) = '\0';
+	return tmp;
+}
+
+
+
 //----- MEMBER FUNCTIONS ------------------------------//
 
 /* concatenate source to string */
@@ -114,6 +172,117 @@ void dystring::copy(const char *source){
 	}
 	*(dystr + i) = '\0';
 }
+
+/* return the number of time character ch occurs in the string. */
+long dystring::countChar(const char ch){
+	long c = 0;
+	for(long i = 0; i < dystrlen; i++){
+		if(*(dystr + i) == ch)
+			c++;
+	}
+	return c;
+}
+
+/* return the number of consonant in the string. */
+long countConsonant(void){
+	long c = 0;
+	for(long i = 0; i < dystrlen; i++){
+		if((*(dystr + i) >= 65 && *(dystr + i) <= 95) || (*(dystr + i) >= 97 && *(dystr + i) <= 122)){
+			if( *(dystr + i) != 'a' &&
+				*(dystr + i) != 'A' &&
+				*(dystr + i) != 'e' &&
+				*(dystr + i) != 'E' &&
+				*(dystr + i) != 'i' &&
+				*(dystr + i) != 'I' &&
+				*(dystr + i) != 'o' &&
+				*(dystr + i) != 'O' &&
+				*(dystr + i) != 'u' &&
+				*(dystr + i) != 'U')
+				c++;
+		}
+	}
+	return c;
+}
+
+/* return the number of lower case consonant in the string. */
+long countConsonantLowerCase(void){
+	long c = 0;
+	for(long i = 0; i < dystrlen; i++){
+		if(*(dystr + i) >= 97 && *(dystr + i) <= 122){
+			if( *(dystr + i) != 'a' &&
+				*(dystr + i) != 'e' &&
+				*(dystr + i) != 'i' &&
+				*(dystr + i) != 'o' &&
+				*(dystr + i) != 'u')
+				c++;
+		}
+	}
+	return c;
+}
+
+/* return the number of upper case consonant in the string. */
+long countConsonantUpperCase(void){
+	long c = 0;
+	for(long i = 0; i < dystrlen; i++){
+		if(*(dystr + i) >= 65 && *(dystr + i) <= 95){
+			if( *(dystr + i) != 'A' &&
+				*(dystr + i) != 'E' &&
+				*(dystr + i) != 'I' &&
+				*(dystr + i) != 'O' &&
+				*(dystr + i) != 'U')
+				c++;
+		}
+	}
+	return c;
+}
+
+/* return the number of times vowel occurs in the string. */
+long dystring::countVowel(void){
+	long c = 0;
+	for(long i = 0; i < dystrlen; i++){
+		if( *(dystr + i) == 'a' ||
+			*(dystr + i) == 'A' ||
+			*(dystr + i) == 'e' ||
+			*(dystr + i) == 'E' ||
+			*(dystr + i) == 'i' ||
+			*(dystr + i) == 'I' ||
+			*(dystr + i) == 'o' ||
+			*(dystr + i) == 'O' ||
+			*(dystr + i) == 'u' ||
+			*(dystr + i) == 'U')
+			c++;
+	}
+	return c;
+}
+
+/* return the number of lower case vowels in the string. */
+long dystring::countVowelLowerCase(void){
+	long c = 0;
+	for(long i = 0; i < dystrlen; i++){
+		if( *(dystr + i) == 'a' ||
+			*(dystr + i) == 'e' ||
+			*(dystr + i) == 'i' ||
+			*(dystr + i) == 'o' ||
+			*(dystr + i) == 'u')
+			c++;
+	}
+	return c;
+}
+
+/* return the number of upper case vowels in the string. */
+long dystring::countVowelUpperCase(void){
+	long c = 0;
+	for(long i = 0; i < dystrlen; i++){
+		if( *(dystr + i) == 'A' ||
+			*(dystr + i) == 'E' ||
+			*(dystr + i) == 'I' ||
+			*(dystr + i) == 'O' ||
+			*(dystr + i) == 'U')
+			c++;
+	}
+	return c;
+}
+
 
 /* return character at the given index, NULL (\0) for invalid index. */
 char dystring::charAt(long index){
