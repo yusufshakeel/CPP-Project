@@ -56,7 +56,6 @@ private:
 	
 	//private member functions
 	void __dymalloc(void);				//free and allocate memory space for string.
-	long __dystrlen(const char *);		//find length of the string.
 	void __dyrealloc(void);				//reallocated memory space and retain previous string.
 	
 public:
@@ -64,10 +63,25 @@ public:
 	//constructors
 	dystring(void);
 	dystring(const char *s);
-
+	
+	//friend function
+	friend long __dystrlen(const char *);		//find length of the string.
+	
+	//operator overloading
+	dystring operator +(const char *str);	//concatenate strings with string constant. Example: str + "hello"
+	dystring operator +(dystring);	//concatenate two strings. Example: str1 + str2
+	friend dystring operator +(const char *str, dystring);	//concatenate string constant with string. Example: "hello" + str
+	
 	//public member functions
 	void concat(const char *source);	//concatenate source to string.
 	void copy(const char *source);	//copy source to string. overwrite string content.
+	long countChar(const char ch);	//return the number of time character ch occurs in the string.
+	long countConsonant(void);		//return the number of consonant in the string.
+	long countConsonantLowerCase(void);		//return the number of lower case consonant in the string.
+	long countConsonantUpperCase(void);		//return the number of upper case consonant in the string.
+	long countVowel(void);		//return the number of vowels in the string.
+	long countVowelLowerCase(void);		//return the number of lower case vowels in the string.
+	long countVowelUpperCase(void);		//return the number of upper case vowels in the string.
 	char charAt(long index);	//return character at the given index, NULL (\0) for invalid index.
 	char * get(void);			//get the content.
 	bool isPalindrome(void);	//true (1) if string is Palindrome. false (0) otherwise.
