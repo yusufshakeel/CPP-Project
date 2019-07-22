@@ -14,6 +14,12 @@
  * print the odd number test code in ascending order
  * print even number of test code in descending order
  *
+ * constraint:
+ * 1 <= t <= 10
+ * 1 <= n <= 100
+ * 1 <= i <= 1000
+ *
+ *
  * example #1
  * 
  * input:
